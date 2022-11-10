@@ -1,6 +1,5 @@
-import { ChangeEvent, useState } from 'react'
-import { loginApi } from '../api/login.api'
-import { LoginInput } from '../types'
+import { useState } from 'react'
+import { LoginApi } from '../api/login.api'
 import MainLayout from './layout/Layout'
 import styles from './styles/login.module.css'
 
@@ -27,7 +26,6 @@ const Login = () => {
                             onChange={(e) => handleChange(e)}
                             placeholder='Email'
                         />
-
                         <input
                             id='password'
                             type="text"
@@ -35,7 +33,7 @@ const Login = () => {
                             placeholder='Password'
                         />
                             <button
-                                onClick={() => loginApi({email: email, password:password}, setToken)}
+                                onClick={() => LoginApi({email: email, password:password}, setToken)}
                             >Login</button>
                     </div>
                     <div className={styles.footer}>

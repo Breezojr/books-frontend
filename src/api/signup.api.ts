@@ -1,11 +1,11 @@
 import { SetStateAction } from 'react';
-import { LoginInput } from '../types';
-export const LoginApi = (
-  input: LoginInput,
+import { SignupInput } from '../types';
+export const SignupApi = (
+  input: SignupInput,
   setToken: (data: SetStateAction<string>) => void,
 ) => {
   const baseUrl = 'http://localhost:3000'
-  fetch( baseUrl + '/auth/login',
+  fetch( baseUrl + '/user/signup',
   {
     method: 'POST',
     headers: {

@@ -4,7 +4,7 @@ import logo from '../logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Book } from '../types';
-import { getAllBooks } from '../api/getAllBooks';
+import { getAllBooks } from '../api/get-all-books.api';
 
 const Home = () => {
     const [books, setAllBooks] = useState<Book[]>([]);
@@ -17,9 +17,12 @@ const Home = () => {
     console.log(books)
 
 
-    const handelClick = (destination: 'login') => {
+    const handelClick = (destination: 'login' | 'signup') => {
         if (destination === 'login') {
             navigate("/login")
+        }
+        if (destination === 'signup') {
+            navigate("/signup")
         }
     }
 
@@ -33,7 +36,12 @@ const Home = () => {
                     <div className={styles.navs}>
                         <p>Home</p>
                         <p
-                            onClick={() => handelClick('login')}
+                            onClick={() => handelClick('signup')}
+                        >
+                            Signup
+                        </p>
+                        <p
+                            onClick={() => handelClick('signup')}
                         >
                             Login
                         </p>
