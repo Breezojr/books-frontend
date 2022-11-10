@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AddBookApi } from '../api/add-book.api'
 import MainLayout from './layout/Layout'
 import styles from './styles/signup.module.css'
@@ -9,8 +9,12 @@ const ViewBook = () => {
     const [author, setAuthor] = useState('')
     const [description, setDescription] = useState('')
     const [response, setResponse] = useState('')
+    const location = useLocation();
+    const state = location.state 
 
     const navigate = useNavigate()
+
+    console.log(state)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.id === 'tile') {

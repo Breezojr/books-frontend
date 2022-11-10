@@ -6,6 +6,7 @@ export type Book = {
   author: string;
   description: string;
   isPublic: string;
+  user: string
 };
 
 export type LoginInput = {
@@ -27,3 +28,10 @@ export type BookInput = {
   description: string;
 };
 
+export type User = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  access_token: string
+};

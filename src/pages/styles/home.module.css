@@ -98,26 +98,77 @@
     border-bottom: 1px solid rgb(185, 180, 180);
 }
 
-.home .main .container .top{
+.home .main .container .row .left{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(209, 147, 41);
+    border-bottom: 1px solid rgb(185, 180, 180);
+}
+
+/* .home .main .container .top{
     font-weight: 600;
     justify-content: center;
-}
+} */
 
 .home .main .container .row .rtitle{
     display: flex;
     height: 100%;
-    width: 20%;
+    width: 25%;
 }
 
 .home .main .container .row .author{
     display: flex;
     height: 100%;
-    width: 20%;
+    width: 25%;
 }
 
 .home .main .container .row .description{
     display: flex;
     flex-direction: row;
     height: 100%;
-    width: 60%;
+    width: 50%;
+}
+
+.home .main .container .row .btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 20%;
+}
+
+.home .main .container .row .btns button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1vw;
+    height: 80%;
+    width: 33%;
+}
+
+.home .main .container .row .btns .someBTn{
+    display: flex;
+    flex-direction: row;
+    height: 60%;
+    width: 33%;
+}
+.home .main .container .row .btns .someBTn .fist{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    background-color: green;
+}
+
+.home .main .container .row .btns .someBTn .last{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: white;
+    width: 50%;
 }

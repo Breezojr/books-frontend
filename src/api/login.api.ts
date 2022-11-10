@@ -2,7 +2,7 @@ import { SetStateAction } from 'react';
 import { LoginInput } from '../types';
 export const LoginApi = (
   input: LoginInput,
-  setToken: (data: SetStateAction<string>) => void,
+  setUser: (data: SetStateAction<any>) => void,
 ) => {
   const baseUrl = 'http://localhost:3000'
   fetch( baseUrl + '/auth/login',
@@ -14,5 +14,5 @@ export const LoginApi = (
     body: JSON.stringify(input),
   })
     .then((response) => response.json())
-    .then((data) => setToken((data) ))
+    .then((data) => setUser(data))
 };
