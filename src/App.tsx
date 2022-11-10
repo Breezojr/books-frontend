@@ -1,11 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Home from './pages/Home';
+import { routes } from './routes';
 
 function App() {
   return (
-   <Home />
+    <Router>
+      <Routes>
+        {routes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.component} />
+        ))}
+      </Routes>
+    </Router>
   );
 }
 

@@ -98,6 +98,11 @@
     border-bottom: 1px solid rgb(185, 180, 180);
 }
 
+.home .main .container .top{
+    font-weight: 600;
+    justify-content: center;
+}
+
 .home .main .container .row .rtitle{
     display: flex;
     height: 100%;
