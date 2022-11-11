@@ -4,7 +4,6 @@ import { UserContext } from '../../providers/UserProvider'
 import { User, UserError } from '../../types'
 import ConfirmationModal from './ConfirmationModal'
 import styles from './styles/login.module.css'
-
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -58,13 +57,9 @@ const LoginModal = ({
                 if (Array.isArray(response.message)) {
                     let errs: string[] = []
                     let message = ''
-
                     const errArr = response.message
-
                     for (let i = 0; i <= errArr.length; i++) {
-
                         message += errArr[i] + ', '
-
                     }
 
                     const someResponse = {
@@ -84,7 +79,6 @@ const LoginModal = ({
                     setModelMessage(response.message)
                 }
             }
-
         })
     }
 
