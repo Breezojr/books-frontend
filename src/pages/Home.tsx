@@ -3,23 +3,27 @@ import styles from './styles/home.module.css'
 import logo from '../logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { Book, User } from '../types';
+import { Book, BookResponse, User } from '../types';
 import { getAllBooks } from '../api/get-all-books.api';
 import { UserContext } from '../providers/UserProvider';
 import LoginModal from '../components/Modal/LoginModal';
 import SignupModal from '../components/Modal/SignupModal';
+import AddBookModal from '../components/Modal/AddBookModel';
 
 const Home = () => {
     const [books, setAllBooks] = useState<Book[]>([]);
     const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const [showSModal, setSShowModal] = useState(false);
+    const [showAModal, setAShowModal] = useState(false);
     const [response, setResponse] = useState<User>()
+    const [Aresponse, setAResponse] = useState<BookResponse>()
     const [errorMessage, setErrorMessage] = useState('');
 
     const { user, logout } = useContext(UserContext);
 
     console.log(response)
+    console.log(Aresponse)
 
     useEffect(() => {
         getAllBooks(setAllBooks);
@@ -33,11 +37,22 @@ const Home = () => {
         }
     }, [response]);
 
+    useEffect(() => {
+        if (Aresponse && Aresponse.status === "200") {
+            setAShowModal(false);
+            setErrorMessage('');
+        }
+    }, [Aresponse]);
+
+
+
+
     const handelClick = (
         destination:
             'login' |
             'signup' |
-            'logout'
+            'logout' |
+            'add'
     ) => {
         if (destination === 'login') {
             setShowModal(!showModal)
@@ -48,7 +63,9 @@ const Home = () => {
         if (destination === 'logout') {
             logout()        
         }
-        
+        if (destination === 'add') {
+            setAShowModal(!showAModal)        
+        } 
     }
 
     const bookClick = (data: Book) => {
@@ -63,7 +80,12 @@ const Home = () => {
     };
 
     const handleSModalClose = () => {
-        setShowModal(!showModal);
+        setShowModal(!showSModal);
+        setErrorMessage('');
+    };
+
+    const handleAModalClose = () => {
+        setShowModal(!showAModal);
         setErrorMessage('');
     };
 
@@ -74,14 +96,16 @@ const Home = () => {
                     isOpen={showModal}
                     onClose={handleModalClose}
                     data={setResponse}
-
-
                 />
                 <SignupModal
                     isOpen={showSModal}
                     onClose={handleSModalClose}
                     data={setResponse}
-
+                />
+                    <AddBookModal
+                    isOpen={showAModal}
+                    onClose={handleAModalClose}
+                    data={setAResponse}
                 />
 
 
@@ -120,6 +144,10 @@ const Home = () => {
                     <div className={styles.main}>
                         <div className={styles.title}>
                             <p>Books</p>
+                            <button 
+                            className={styles.bookBtn}
+                            onClick={() => handelClick('add')}
+                            >Add New Book</button>
                         </div>
                         <div className={styles.container}>
 

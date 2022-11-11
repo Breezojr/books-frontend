@@ -1,18 +1,18 @@
-import { SetStateAction } from 'react';
-import { BookInput } from '../types';
-export const AddBookApi = (
-  input: BookInput,
-  setToken: (data: SetStateAction<string>) => void,
-) => {
+import { BookInput, User } from '../types';
+import { UserContext } from '../providers/UserProvider';
+import { useContext } from 'react';
+
+export const AddBookApi = async (input: BookInput, user:User) => {
   const baseUrl = 'http://localhost:3000'
-  fetch( baseUrl + '/books/add',
+ 
+  const response = await fetch(baseUrl + '/books/add',
   {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user?.access_token}`
     },
     body: JSON.stringify(input),
   })
-    .then((response) => response.json())
-    .then((data) => setToken((data) ))
+  return await response.json();
 };

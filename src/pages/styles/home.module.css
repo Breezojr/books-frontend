@@ -71,13 +71,28 @@
 
 .home .main .title{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     height: 10%;
     font-size: 1.4vw;
     font-weight: 600;
-    width: 98%;
+    width: 94%;
     background-color: rgb(177, 143, 88);
-    padding-left: 2%;
+    padding:0 3%;
+}
+
+.home .main .title .bookBtn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    border-radius: 5px;
+    height: 80%;
+    width: 10%;
+    cursor: pointer;
+ 
 }
 
 .home .main .container{
@@ -106,11 +121,6 @@
     background-color: rgb(209, 147, 41);
     border-bottom: 1px solid rgb(185, 180, 180);
 }
-
-/* .home .main .container .top{
-    font-weight: 600;
-    justify-content: center;
-} */
 
 .home .main .container .row .rtitle{
     display: flex;

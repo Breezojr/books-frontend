@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 
 export type Book = {
   id: string;
@@ -50,3 +49,10 @@ export type UserError = {
   status?: string
   statusCode?: string
 };
+
+export type BookResponse = {
+  message: string 
+  status?: string
+};
+
+
