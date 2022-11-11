@@ -1,5 +1,4 @@
 import {
-  Login,
   Home,
   AddBook,
   EditBook,
@@ -11,10 +10,6 @@ export const routes = [
   {
     path: '/',
     component: <Home />,
-  },
-  {
-    path: '/login',
-    component: <Login />,
   },
   {
     path: '/signup',

@@ -29,9 +29,18 @@ export type BookInput = {
 };
 
 export type User = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  access_token: string
+  id?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  access_token?: string
+  status?: string
+  message?: string | string[]
+  statusCode?: string
+};
+
+export type UserError = {
+  message: string | string []
+  status?: string
+  statusCode?: string
 };

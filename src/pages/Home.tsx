@@ -3,22 +3,32 @@ import styles from './styles/home.module.css'
 import logo from '../logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { Book } from '../types';
+import { Book, User } from '../types';
 import { getAllBooks } from '../api/get-all-books.api';
 import { UserContext } from '../providers/UserProvider';
+import LoginModal from '../components/Modal/LoginModal';
 
 const Home = () => {
     const [books, setAllBooks] = useState<Book[]>([]);
     const navigate = useNavigate()
+    const [showModal, setShowModal] = useState(false);
+    const [response, setResponse] = useState<User>()
+    const [errorMessage, setErrorMessage] = useState('');
+
     const { user } = useContext(UserContext);
 
+    console.log(response)
 
     useEffect(() => {
         getAllBooks(setAllBooks);
     }, []);
 
-    console.log(user)
-
+    useEffect(() => {
+        if(response && response.status === "200"){
+            setShowModal(!showModal);
+            setErrorMessage('');
+        }
+    }, [response]);
 
     const handelClick = (
         destination:
@@ -26,7 +36,7 @@ const Home = () => {
             'signup'
     ) => {
         if (destination === 'login') {
-            navigate("/login")
+            setShowModal(!showModal)
         }
         if (destination === 'signup') {
             navigate("/signup")
@@ -37,10 +47,26 @@ const Home = () => {
         navigate("/view", {
             state: data
         })
-
     }
+
+
+
+    const handleModalClose = () => {
+        setShowModal(!showModal);
+        setErrorMessage('');
+      };
     return (
         <MainLayout>
+            <>
+            <LoginModal
+                      isOpen={showModal}
+                      onClose={handleModalClose}
+                      data={setResponse}
+
+
+            />
+            
+            
             <div className={styles.home}>
                 <div className={styles.navbar}>
                     <div className={styles.title}>
@@ -114,6 +140,8 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            </>
+           
         </MainLayout>
     )
 }
