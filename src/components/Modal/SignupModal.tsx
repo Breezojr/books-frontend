@@ -5,7 +5,6 @@ import { UserContext } from '../../providers/UserProvider'
 import { Signup, SignupInput, User, UserError } from '../../types'
 import ConfirmationModal from './ConfirmationModal'
 import styles from './styles/signup.module.css'
-
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -57,7 +56,6 @@ const SignupModal = ({
 
     console.log(success)
 
-
     const handleSignup = () => {
         const input = {
             email,
@@ -83,13 +81,9 @@ const SignupModal = ({
             if (Array.isArray(response.message)) {
                 let errs: string[] = []
                 let message = ''
-
                 const errArr = response.message
-
                 for (let i = 0; i <= errArr.length; i++) {
-
                     message += errArr[i] + ', '
-
                 }
 
                 const someResponse = {
