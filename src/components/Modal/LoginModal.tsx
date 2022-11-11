@@ -8,35 +8,24 @@ import styles from './styles/login.module.css'
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    title?: string;
-    message?: string;
-    onSubmit?: () => void;
-    onCloseText?: string;
-    onSuccessText?: string;
     data: React.Dispatch<React.SetStateAction<User | undefined>>
 }
 
 const LoginModal = ({
     isOpen = false,
     onClose,
-    title = 'Error!',
-    message = 'Something Happened',
-    onSubmit,
     data,
-    onSuccessText,
 }: ModalProps,) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [logUser, setLogUser] = useState<User>()
-    const [logErr, setLogErr] = useState('');
     const [success, setSuccess] = useState<User>();
-
     const [response, setResponse] = useState<User>()
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModelMessage] = useState('');
     const [modalTitle, setModelTitle] = useState('');
 
-    const { login, user } = useContext(UserContext);
+    const { login } = useContext(UserContext);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.target.id === 'email' ? setEmail(event.target.value) : setPassword(event.target.value)
@@ -98,8 +87,6 @@ const LoginModal = ({
             }
         })
     }
-
-
 
     const handleModalClose = () => {
         setShowModal(false);
