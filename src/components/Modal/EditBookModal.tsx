@@ -1,21 +1,24 @@
 import { useContext, useEffect, useState } from 'react'
-import { AddBookApi } from '../../api/add-book.api'
+import { EditBookApi } from '../../api/edit-book.api'
 import { UserContext } from '../../providers/UserProvider'
-import { BookResponse } from '../../types'
+import { Book, BookResponse } from '../../types'
 import ConfirmationModal from './ConfirmationModal'
 import styles from './styles/add-book.module.css'
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
+    book?: Book
     data: React.Dispatch<React.SetStateAction<BookResponse | undefined>>
 }
 
-const AddBookModal = ({
+const EditBookModal = ({
     isOpen = false,
     onClose,
+    book,
     data,
 }: ModalProps,) => {
+    const [logUser, setLogUser] = useState<BookResponse>()
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
     const [description, setDescription] = useState('')
@@ -26,6 +29,7 @@ const AddBookModal = ({
     const [modalTitle, setModelTitle] = useState('');
 
     const { user } = useContext(UserContext);
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.id === 'title') {
             setTitle(event.target.value)
@@ -47,16 +51,18 @@ const AddBookModal = ({
     }, [success]);
 
 
-    const handleAddBook = () => {
+
+    const handleEditBook = (book: Book) => {
         const input = {
             title,
             author,
             description,
         }
-       user && AddBookApi(input, user).then((response: BookResponse) => {
+        user && EditBookApi(input, book._id, user).then((response: BookResponse) => {
             if (response.status === "200") {
                 setSuccess(response)
             }
+
             else{
                 if (Array.isArray(response.message)) {
                     let errs: string[] = []
@@ -113,29 +119,29 @@ const AddBookModal = ({
                                 id='title'
                                 type="text"
                                 onChange={(e) => handleChange(e)}
-                                placeholder='Title'
+                                placeholder={book?.title}
                             />
-                             <input
+                            <input
                                 id='author'
                                 type="text"
                                 onChange={(e) => handleChange(e)}
-                                placeholder='Author'
+                                placeholder={book?.author}
                             />
                             <input
                                 id='description'
                                 type="text"
                                 onChange={(e) => handleChange(e)}
-                                placeholder='Description'
+                                placeholder={book?.description}
                             />
-                            <button
-                                onClick={() => handleAddBook()}
+                            {book && <button
+                                onClick={() => handleEditBook(book)}
                             >
-                                Sbmit
-                            </button>
+                                Submit
+                            </button>}
                         </div>
                         <div className={styles.footer}>
                             <button
-                            onClick={() => onClose()}
+                                onClick={() => onClose()}
                             >
                                 Cancel
                             </button>
@@ -147,4 +153,4 @@ const AddBookModal = ({
     )
 }
 
-export default AddBookModal
+export default EditBookModal

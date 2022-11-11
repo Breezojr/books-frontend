@@ -29,8 +29,6 @@ const SignupModal = ({
     const [modalMessage, setModelMessage] = useState('');
     const [modalTitle, setModelTitle] = useState('');
 
-    const { login } = useContext(UserContext);
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.id === 'email') {
             setEmail(event.target.value)
@@ -47,7 +45,8 @@ const SignupModal = ({
         }
         if (event.target.id === 'confirpassword') {
             setConfirmPassword(event.target.value)
-        }    }
+        }
+    }
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -58,9 +57,6 @@ const SignupModal = ({
 
     console.log(success)
 
-    useEffect(() => {
-        logUser && login(logUser)
-    }, [logUser])
 
     const handleSignup = () => {
         const input = {
@@ -82,7 +78,6 @@ const SignupModal = ({
                 setPassword('')
                 setConfirmPassword('')
                 setSuccess(response)
-                login(response)
             }
 
             if (Array.isArray(response.message)) {
@@ -134,56 +129,57 @@ const SignupModal = ({
                     message={modalMessage}
                 ></ConfirmationModal>
                 <div className={styles.signup}>
-                <div className={styles.container}>
-                    <div className={styles.title}>
-                        <p>Signup your account</p>
-                    </div>
-                    <div className={styles.main}>
-                        <input
-                            id='email'
-                            type="text"
-                            onChange={(e) => handleChange(e)}
-                            placeholder='Email'
-                        />
-                        <input
-                            id='firstName'
-                            type="text"
-                            onChange={(e) => handleChange(e)}
-                            placeholder='First Name'
-                        />
-                        <input
-                            id='lastName'
-                            type="text"
-                            onChange={(e) => handleChange(e)}
-                            placeholder='Last Name'
-                        />
-                        <input
-                            id='password'
-                            type="text"
-                            onChange={(e) => handleChange(e)}
-                            placeholder='Password'
-                        />
-                        <input
-                            id='confirpassword'
-                            type="text"
-                            onChange={(e) => handleChange(e)}
-                            placeholder='Confirm password'
-                        />
+                    <div className={styles.container}>
+                        <div className={styles.title}>
+                            <p>Signup your account</p>
+                        </div>
+                        <div className={styles.main}>
+                            <input
+                                id='email'
+                                type="text"
+                                onChange={(e) => handleChange(e)}
+                                placeholder='Email'
+                            />
+                            <input
+                                id='firstName'
+                                type="text"
+                                onChange={(e) => handleChange(e)}
+                                placeholder='First Name'
+                            />
+                            <input
+                                id='lastName'
+                                type="text"
+                                onChange={(e) => handleChange(e)}
+                                placeholder='Last Name'
+                            />
+                            <input
+                                id='password'
+                                type="text"
+                                onChange={(e) => handleChange(e)}
+                                placeholder='Password'
+                            />
+                            <input
+                                id='confirpassword'
+                                type="text"
+                                onChange={(e) => handleChange(e)}
+                                placeholder='Confirm password'
+                            />
 
-                        <button
-                         onClick={() => handleSignup()}
-                        >
-                            SignUp
-                        </button>
-                    </div>
-                    <div className={styles.footer}>
-                        <button
-                        >
-                            Login
-                        </button>
+                            <button
+                                onClick={() => handleSignup()}
+                            >
+                                SignUp
+                            </button>
+                        </div>
+                        <div className={styles.footer}>
+                            <button
+                                onClick={() => onClose()}
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     )

@@ -9,6 +9,9 @@ import { UserContext } from '../providers/UserProvider';
 import LoginModal from '../components/Modal/LoginModal';
 import SignupModal from '../components/Modal/SignupModal';
 import AddBookModal from '../components/Modal/AddBookModel';
+import EditBookModal from '../components/Modal/EditBookModal';
+import { DeleteApi } from '../api/delete-book.api';
+import { ConfirmationModal } from '../components/Modal';
 
 const Home = () => {
     const [books, setAllBooks] = useState<Book[]>([]);
@@ -16,18 +19,30 @@ const Home = () => {
     const [showModal, setShowModal] = useState(false);
     const [showSModal, setSShowModal] = useState(false);
     const [showAModal, setAShowModal] = useState(false);
+    const [showEModal, setEShowModal] = useState(false);
+    const [addBtn, setAddBtn] = useState(true);
+
+    const [book, setBook] = useState<Book>();
     const [response, setResponse] = useState<User>()
     const [Aresponse, setAResponse] = useState<BookResponse>()
+    const [Eresponse, setEResponse] = useState<BookResponse>()
+    const [modalTitle, setModalTitle] = useState('')
+    const [confrimShow, setConfrimShow] = useState(false)
+    const [confirmMessage, setConfirmMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('');
 
     const { user, logout } = useContext(UserContext);
 
-    console.log(response)
-    console.log(Aresponse)
-
     useEffect(() => {
         getAllBooks(setAllBooks);
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            setAddBtn(false)
+        }
+    }, [user]);
+
 
     useEffect(() => {
         if (response && response.status === "200") {
@@ -39,12 +54,19 @@ const Home = () => {
 
     useEffect(() => {
         if (Aresponse && Aresponse.status === "200") {
+            getAllBooks(setAllBooks);
             setAShowModal(false);
             setErrorMessage('');
         }
     }, [Aresponse]);
 
-
+    useEffect(() => {
+        if (Eresponse && Eresponse.status === "200") {
+            getAllBooks(setAllBooks);
+            setEShowModal(false);
+            setErrorMessage('');
+        }
+    }, [Eresponse]);
 
 
     const handelClick = (
@@ -52,7 +74,9 @@ const Home = () => {
             'login' |
             'signup' |
             'logout' |
-            'add'
+            'add' |
+            'edit' |
+            'delete'
     ) => {
         if (destination === 'login') {
             setShowModal(!showModal)
@@ -61,17 +85,40 @@ const Home = () => {
             setSShowModal(!showSModal)
         }
         if (destination === 'logout') {
-            logout()        
+            logout()
         }
         if (destination === 'add') {
-            setAShowModal(!showAModal)        
-        } 
+            setAShowModal(!showAModal)
+        }
+        if (destination === 'edit') {
+            setEShowModal(!showEModal)
+        }
     }
 
-    const bookClick = (data: Book) => {
-        navigate("/view", {
-            state: data
-        })
+    const handelEdit = (data: Book) => {
+        setBook(data)
+        setEShowModal(!showEModal)
+    }
+
+    const handelDelete = (bookData: Book) => {
+        user && DeleteApi(bookData._id, user).then(data => {
+            console.log(data)
+            console.log(data.status)
+            if (data.status === '200') {
+                setAllBooks(current =>
+                    current.filter(book => {
+                      // 👇️ remove object that has id equal to 2
+                      return book._id !== bookData._id;
+                    }),
+                  )
+            }
+            else {
+                setModalTitle('Error')
+                setConfirmMessage('Delete Unsuccess')
+                setConfrimShow(true)
+            }
+        }
+        )
     }
 
     const handleModalClose = () => {
@@ -80,12 +127,22 @@ const Home = () => {
     };
 
     const handleSModalClose = () => {
-        setShowModal(!showSModal);
+        setSShowModal(!showSModal);
         setErrorMessage('');
     };
 
     const handleAModalClose = () => {
-        setShowModal(!showAModal);
+        setAShowModal(!showAModal);
+        setErrorMessage('');
+    };
+
+    const handleEModalClose = () => {
+        setEShowModal(!showEModal);
+        setErrorMessage('');
+    };
+
+    const handleShowModalClose = () => {
+        setConfrimShow(!confrimShow);
         setErrorMessage('');
     };
 
@@ -102,11 +159,24 @@ const Home = () => {
                     onClose={handleSModalClose}
                     data={setResponse}
                 />
-                    <AddBookModal
+                <AddBookModal
                     isOpen={showAModal}
                     onClose={handleAModalClose}
                     data={setAResponse}
                 />
+                <EditBookModal
+                    book={book}
+                    isOpen={showEModal}
+                    onClose={handleEModalClose}
+                    data={setEResponse}
+                />
+
+                <ConfirmationModal
+                    title={modalTitle}
+                    isOpen={confrimShow}
+                    onClose={handleShowModalClose}
+                    message={confirmMessage}
+                ></ConfirmationModal>
 
 
 
@@ -125,13 +195,13 @@ const Home = () => {
                                 Signup
                             </p>}
                             {!user && <p
-                                    onClick={() => handelClick('login')}
-                                >
-                                    Login
-                                </p>
+                                onClick={() => handelClick('login')}
+                            >
+                                Login
+                            </p>
                             }
                             <p
-                                 onClick={() => handelClick('logout')}
+                                onClick={() => handelClick('logout')}
                             >Logout </p>
                         </div>
                         <div className={styles.profile}>
@@ -144,9 +214,10 @@ const Home = () => {
                     <div className={styles.main}>
                         <div className={styles.title}>
                             <p>Books</p>
-                            <button 
-                            className={styles.bookBtn}
-                            onClick={() => handelClick('add')}
+                            <button
+                                className={styles.bookBtn}
+                                onClick={() => handelClick('add')}
+                                disabled={addBtn}
                             >Add New Book</button>
                         </div>
                         <div className={styles.container}>
@@ -164,7 +235,6 @@ const Home = () => {
                                 >
                                     <div
                                         className={styles.left}
-                                        onClick={() => bookClick(book)}
                                     >
                                         <p className={styles.rtitle}>{book.title}</p>
                                         <p className={styles.author}>{book.author}</p>
@@ -178,8 +248,12 @@ const Home = () => {
                                             <div className={styles.last}>
                                             </div>
                                         </div>
-                                        <button>Edit</button>
-                                        <button>Delete</button>
+                                        <button
+                                            onClick={() => handelEdit(book)}
+                                        >Edit</button>
+                                        <button
+                                            onClick={() => handelDelete(book)}
+                                        >Delete</button>
                                     </div>
 
                                     }
