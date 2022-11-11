@@ -50,9 +50,6 @@ const LoginModal = ({
         LoginAPi(input).then((response: User) => {
             console.log(response)
             if (response.status === "200") {
-                setModelTitle('Success')
-                setShowModal(true)
-                setModelMessage('login Good')
                 setSuccess(response)
                 login(response)
             }
