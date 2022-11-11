@@ -3,17 +3,12 @@ import {
   AddBook,
   EditBook,
   ViewBook,
-  Signup
 } from './pages';
 
 export const routes = [
   {
     path: '/',
     component: <Home />,
-  },
-  {
-    path: '/signup',
-    component: <Signup />,
   },
   {
     path: '/add',

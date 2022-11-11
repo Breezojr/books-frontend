@@ -7,15 +7,17 @@ import { Book, User } from '../types';
 import { getAllBooks } from '../api/get-all-books.api';
 import { UserContext } from '../providers/UserProvider';
 import LoginModal from '../components/Modal/LoginModal';
+import SignupModal from '../components/Modal/SignupModal';
 
 const Home = () => {
     const [books, setAllBooks] = useState<Book[]>([]);
     const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
+    const [showSModal, setSShowModal] = useState(false);
     const [response, setResponse] = useState<User>()
     const [errorMessage, setErrorMessage] = useState('');
 
-    const { user } = useContext(UserContext);
+    const { user, logout } = useContext(UserContext);
 
     console.log(response)
 
@@ -24,8 +26,9 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        if(response && response.status === "200"){
-            setShowModal(!showModal);
+        if (response && response.status === "200") {
+            setShowModal(false);
+            setSShowModal(false);
             setErrorMessage('');
         }
     }, [response]);
@@ -33,14 +36,19 @@ const Home = () => {
     const handelClick = (
         destination:
             'login' |
-            'signup'
+            'signup' |
+            'logout'
     ) => {
         if (destination === 'login') {
             setShowModal(!showModal)
         }
         if (destination === 'signup') {
-            navigate("/signup")
+            setSShowModal(!showSModal)
         }
+        if (destination === 'logout') {
+            logout()        
+        }
+        
     }
 
     const bookClick = (data: Book) => {
@@ -49,99 +57,113 @@ const Home = () => {
         })
     }
 
-
-
     const handleModalClose = () => {
         setShowModal(!showModal);
         setErrorMessage('');
-      };
+    };
+
+    const handleSModalClose = () => {
+        setShowModal(!showModal);
+        setErrorMessage('');
+    };
+
     return (
         <MainLayout>
             <>
-            <LoginModal
-                      isOpen={showModal}
-                      onClose={handleModalClose}
-                      data={setResponse}
+                <LoginModal
+                    isOpen={showModal}
+                    onClose={handleModalClose}
+                    data={setResponse}
 
 
-            />
-            
-            
-            <div className={styles.home}>
-                <div className={styles.navbar}>
-                    <div className={styles.title}>
-                        <p>Book Library</p>
-                    </div>
-                    <div
-                        className={styles.navs}
-                    >
-                        <p>Home</p>
-                        <p
-                            onClick={() => handelClick('signup')}
-                        >
-                            Signup
-                        </p>
-                        <p
-                            onClick={() => handelClick('login')}
-                        >
-                            Login
-                        </p>
-                        <p>Logout </p>
-                    </div>
-                    <div className={styles.profile}>
-                        <div className={styles.pro_container}>
-                            <img src={logo} alt="" />
+                />
+                <SignupModal
+                    isOpen={showSModal}
+                    onClose={handleSModalClose}
+                    data={setResponse}
+
+                />
+
+
+
+                <div className={styles.home}>
+                    <div className={styles.navbar}>
+                        <div className={styles.title}>
+                            <p>Book Library</p>
                         </div>
-
-                    </div>
-                </div>
-                <div className={styles.main}>
-                    <div className={styles.title}>
-                        <p>Books</p>
-                    </div>
-                    <div className={styles.container}>
-
-                        <div className={`${styles.row} ${styles.top}`}>
-                            <p className={styles.rtitle}>Title</p>
-                            <p className={styles.author}>Author</p>
-                            <p className={styles.description}>Description</p>
-                        </div>
-
-                        {books.map((book, i) =>
-                            <div
-                                className={styles.row}
-                                key={i}
+                        <div
+                            className={styles.navs}
+                        >
+                            <p>Home</p>
+                            {!user && <p
+                                onClick={() => handelClick('signup')}
                             >
-                                <div
-                                    className={styles.left}
-                                    onClick={() => bookClick(book)}
+                                Signup
+                            </p>}
+                            {!user && <p
+                                    onClick={() => handelClick('login')}
                                 >
-                                    <p className={styles.rtitle}>{book.title}</p>
-                                    <p className={styles.author}>{book.author}</p>
-                                    <p className={styles.description}>{book.description}</p>
-                                </div>
-
-                                {user?.id === book.user && <div className={styles.btns}>
-                                    <div className={styles.someBTn}>
-                                        <div className={styles.fist}>
-                                        </div>
-                                        <div className={styles.last}>
-                                        </div>
-                                    </div>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
-                                </div>
-
-                                }
+                                    Login
+                                </p>
+                            }
+                            <p
+                                 onClick={() => handelClick('logout')}
+                            >Logout </p>
+                        </div>
+                        <div className={styles.profile}>
+                            <div className={styles.pro_container}>
+                                <img src={logo} alt="" />
                             </div>
-                        )
-                        }
 
+                        </div>
+                    </div>
+                    <div className={styles.main}>
+                        <div className={styles.title}>
+                            <p>Books</p>
+                        </div>
+                        <div className={styles.container}>
+
+                            <div className={`${styles.row} ${styles.top}`}>
+                                <p className={styles.rtitle}>Title</p>
+                                <p className={styles.author}>Author</p>
+                                <p className={styles.description}>Description</p>
+                            </div>
+
+                            {books.map((book, i) =>
+                                <div
+                                    className={styles.row}
+                                    key={i}
+                                >
+                                    <div
+                                        className={styles.left}
+                                        onClick={() => bookClick(book)}
+                                    >
+                                        <p className={styles.rtitle}>{book.title}</p>
+                                        <p className={styles.author}>{book.author}</p>
+                                        <p className={styles.description}>{book.description}</p>
+                                    </div>
+
+                                    {user?.id === book.user && <div className={styles.btns}>
+                                        <div className={styles.someBTn}>
+                                            <div className={styles.fist}>
+                                            </div>
+                                            <div className={styles.last}>
+                                            </div>
+                                        </div>
+                                        <button>Edit</button>
+                                        <button>Delete</button>
+                                    </div>
+
+                                    }
+                                </div>
+                            )
+                            }
+
+                        </div>
                     </div>
                 </div>
-            </div>
             </>
-           
+
         </MainLayout>
     )
 }

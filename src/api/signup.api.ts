@@ -1,11 +1,9 @@
-import { SetStateAction } from 'react';
 import { SignupInput } from '../types';
-export const SignupApi = (
-  input: SignupInput,
-  setToken: (data: SetStateAction<string>) => void,
-) => {
+
+export const SignupAPi = async (input: SignupInput) => {
   const baseUrl = 'http://localhost:3000'
-  fetch( baseUrl + '/user/signup',
+ 
+  const response = await fetch(baseUrl + '/user/signup',
   {
     method: 'POST',
     headers: {
@@ -13,6 +11,5 @@ export const SignupApi = (
     },
     body: JSON.stringify(input),
   })
-    .then((response) => response.json())
-    .then((data) => setToken((data) ))
+  return await response.json();
 };

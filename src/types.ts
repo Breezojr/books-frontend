@@ -39,6 +39,12 @@ export type User = {
   statusCode?: string
 };
 
+export type Signup = {
+  status?: string;
+  name?: string;
+};
+
+
 export type UserError = {
   message: string | string []
   status?: string
