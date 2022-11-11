@@ -154,15 +154,15 @@ const SignupModal = ({
                             />
                             <input
                                 id='password'
-                                type="text"
+                                type="password"
                                 onChange={(e) => handleChange(e)}
-                                placeholder='Password'
+                                placeholder='.....'
                             />
                             <input
                                 id='confirpassword'
-                                type="text"
+                                type="password"
                                 onChange={(e) => handleChange(e)}
-                                placeholder='Confirm password'
+                                placeholder='.....'
                             />
 
                             <button

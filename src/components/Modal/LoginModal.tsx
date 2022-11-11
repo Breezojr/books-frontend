@@ -56,35 +56,38 @@ const LoginModal = ({
                 setSuccess(response)
                 login(response)
             }
+            else {
 
-            if (Array.isArray(response.message)) {
-                let errs: string[] = []
-                let message = ''
+                if (Array.isArray(response.message)) {
+                    let errs: string[] = []
+                    let message = ''
 
-                const errArr = response.message
+                    const errArr = response.message
 
-                for (let i = 0; i <= errArr.length; i++) {
+                    for (let i = 0; i <= errArr.length; i++) {
 
-                    message += errArr[i] + ', '
+                        message += errArr[i] + ', '
 
+                    }
+
+                    const someResponse = {
+                        message,
+                        status: response.statusCode
+                    }
+                    data(someResponse)
+                    setModelTitle('Error')
+                    setShowModal(true)
+                    setModelMessage(message)
                 }
-
-                const someResponse = {
-                    message,
-                    status: response.statusCode
+                if (typeof response.message === 'string') {
+                    setModelTitle('Error')
+                    setResponse(response)
+                    data(response)
+                    setShowModal(true)
+                    setModelMessage(response.message)
                 }
-                data(someResponse)
-                setModelTitle('Error')
-                setShowModal(true)
-                setModelMessage(message)
             }
-            if (typeof response.message === 'string') {
-                setModelTitle('Error')
-                setResponse(response)
-                data(response)
-                setShowModal(true)
-                setModelMessage(response.message)
-            }
+
         })
     }
 
@@ -125,9 +128,9 @@ const LoginModal = ({
                             />
                             <input
                                 id='password'
-                                type="text"
+                                type="password"
                                 onChange={(e) => handleChange(e)}
-                                placeholder='Password'
+                                placeholder='.....'
                             />
                             <button
                                 onClick={() => handleLogin()}
