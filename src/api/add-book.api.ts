@@ -1,7 +1,6 @@
 import { BookInput, User } from '../types';
+import { baseUrl } from './constants';
 export const AddBookApi = async (input: BookInput, user:User) => {
-  const baseUrl = 'http://localhost:3000'
- 
   const response = await fetch(baseUrl + '/books/add',
   {
     method: 'POST',

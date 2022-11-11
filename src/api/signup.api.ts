@@ -1,8 +1,7 @@
 import { SignupInput } from '../types';
+import { baseUrl } from './constants';
 
-export const SignupAPi = async (input: SignupInput) => {
-  const baseUrl = 'http://localhost:3000'
- 
+export const SignupAPi = async (input: SignupInput) => { 
   const response = await fetch(baseUrl + '/user/signup',
   {
     method: 'POST',

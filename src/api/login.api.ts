@@ -1,8 +1,7 @@
 import { LoginInput } from '../types';
+import { baseUrl } from './constants';
 
-export const LoginAPi = async (input: LoginInput) => {
-  const baseUrl = 'http://localhost:3000'
- 
+export const LoginAPi = async (input: LoginInput) => { 
   const response = await fetch(baseUrl + '/auth/login',
   {
     method: 'POST',

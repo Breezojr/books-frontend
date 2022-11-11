@@ -66,7 +66,7 @@
     align-items: center;
     height: 80%;
     width: 94%;
-    background-color: rgb(187, 182, 174);
+    background-color: rgb(209, 147, 41);
 }
 
 .home .main .title{
@@ -100,7 +100,7 @@
     align-items: center;
     height: 90%;
     width: 96%;
-    background-color: rgb(88, 74, 50);
+    background-color: rgb(209, 147, 41);
 }
 
 .home .main .container .row{
@@ -113,7 +113,7 @@
 }
 
 .home .main .container .top{
-    font-size: 1.3vw;
+        font-size: 1.3vw;
     font-weight: 600;
 }
 

@@ -1,10 +1,10 @@
 import { SetStateAction } from 'react';
 import { LoginInput } from '../types';
+import { baseUrl } from './constants';
 export const LoginApi = (
   input: LoginInput,
   setToken: (data: SetStateAction<string>) => void,
 ) => {
-  const baseUrl = 'http://localhost:3000'
   fetch( baseUrl + '/auth/login',
   {
     method: 'POST',

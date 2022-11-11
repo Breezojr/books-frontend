@@ -1,8 +1,7 @@
 import { User } from "../types";
+import { baseUrl } from "./constants";
 
-export const DeleteApi = async (id: string, user: User) => {
-  const baseUrl = 'http://localhost:3000'
- 
+export const DeleteApi = async (id: string, user: User) => { 
   const response = await fetch(baseUrl + '/books/delete/' + id,
   {
     method: 'DELETE',
