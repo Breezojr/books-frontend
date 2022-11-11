@@ -92,7 +92,6 @@
     height: 80%;
     width: 10%;
     cursor: pointer;
- 
 }
 
 .home .main .container{
@@ -113,11 +112,16 @@
     border-bottom: 1px solid rgb(185, 180, 180);
 }
 
+.home .main .container .top{
+    font-size: 1.3vw;
+    font-weight: 600;
+}
+
 .home .main .container .row .left{
     display: flex;
     flex-direction: row;
     height: 100%;
-    width: 100%;
+    width: 80%;
     background-color: rgb(209, 147, 41);
     border-bottom: 1px solid rgb(185, 180, 180);
 }
@@ -173,6 +177,16 @@
     height: 100%;
     width: 50%;
     background-color: green;
+    cursor: pointer;
+}
+
+.home .main .container .row .btns .someBTn .anotherFirst{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    background-color: rgb(243, 245, 243);
+    cursor: pointer;
 }
 
 .home .main .container .row .btns .someBTn .last{
@@ -181,4 +195,5 @@
     height: 100%;
     background-color: white;
     width: 50%;
+    cursor: pointer;
 }

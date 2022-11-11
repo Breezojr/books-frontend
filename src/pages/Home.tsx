@@ -1,7 +1,6 @@
 import MainLayout from './layout/Layout'
 import styles from './styles/home.module.css'
 import logo from '../logo.svg';
-import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { Book, BookResponse, User } from '../types';
 import { getAllBooks } from '../api/get-all-books.api';
@@ -12,10 +11,10 @@ import AddBookModal from '../components/Modal/AddBookModel';
 import EditBookModal from '../components/Modal/EditBookModal';
 import { DeleteApi } from '../api/delete-book.api';
 import { ConfirmationModal } from '../components/Modal';
+import { StatusApi } from '../api/change-book-status.api';
 
 const Home = () => {
     const [books, setAllBooks] = useState<Book[]>([]);
-    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const [showSModal, setSShowModal] = useState(false);
     const [showAModal, setAShowModal] = useState(false);
@@ -36,6 +35,16 @@ const Home = () => {
     useEffect(() => {
         getAllBooks(setAllBooks);
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            getAllBooks(setAllBooks);
+        }
+        else {
+            const defaultBooks = books.filter(book => book.isPublic)
+            setAllBooks(defaultBooks);
+        }
+    }, [user]);
 
     useEffect(() => {
         if (user) {
@@ -107,14 +116,28 @@ const Home = () => {
             if (data.status === '200') {
                 setAllBooks(current =>
                     current.filter(book => {
-                      // 👇️ remove object that has id equal to 2
-                      return book._id !== bookData._id;
+                        // 👇️ remove object that has id equal to 2
+                        return book._id !== bookData._id;
                     }),
-                  )
+                )
             }
             else {
                 setModalTitle('Error')
                 setConfirmMessage('Delete Unsuccess')
+                setConfrimShow(true)
+            }
+        }
+        )
+    }
+
+    const changeStatus = (book: Book) => {
+        user && StatusApi(book._id, user).then(data => {
+            if (data.status === '200') {
+                getAllBooks(setAllBooks);
+            }
+            else {
+                setModalTitle('Error')
+                setConfirmMessage('Process Failed')
                 setConfrimShow(true)
             }
         }
@@ -236,15 +259,23 @@ const Home = () => {
                                     <div
                                         className={styles.left}
                                     >
-                                        <p className={styles.rtitle}>{book.title}</p>
-                                        <p className={styles.author}>{book.author}</p>
-                                        <p className={styles.description}>{book.description}</p>
+                                        <p className={styles.rtitle}>{book.title.length > 20 ?  book.title.slice(0, 20)  : book.title}</p>
+                                        <p className={styles.author}>{book.author.length > 20 ?  book.author.slice(0, 20)  : book.author}</p>
+                                        <p className={styles.description}>{book.description.length > 50 ?  book.description.slice(0, 50)  : book.description}</p>
                                     </div>
 
-                                    {user?.id === book.user && <div className={styles.btns}>
-                                        <div className={styles.someBTn}>
-                                            <div className={styles.fist}>
+                                    {user?.id === book.user &&
+                                     <div className={styles.btns}>
+                                        <div
+                                            onClick={() => changeStatus(book)}
+                                            className={styles.someBTn}>
+                                            {book.isPublic ? <div
+                                                className={styles.fist}>
                                             </div>
+                                                :
+                                                <div className={styles.anotherFirst}>
+                                                </div>
+                                            }
                                             <div className={styles.last}>
                                             </div>
                                         </div>
@@ -255,7 +286,6 @@ const Home = () => {
                                             onClick={() => handelDelete(book)}
                                         >Delete</button>
                                     </div>
-
                                     }
                                 </div>
                             )
@@ -265,9 +295,10 @@ const Home = () => {
                     </div>
                 </div>
             </>
-
         </MainLayout>
     )
 }
+
+
 
 export default Home
